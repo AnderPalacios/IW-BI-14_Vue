@@ -84,6 +84,54 @@
 
     <!-- Contactos Grid Section -->
     <div class="container" id="appVue">
+        <!-- Añadir nuevo Section -->
+        <section id="nuevo">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h2>Añadir contacto</h2>
+                        <hr class="star-primary">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <!-- Utilizamos los v-model -->
+                        <form name="sentMessage" id="contactForm" novalidate>
+                            <div class="row control-group">
+                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                    <label>Nombre</label>
+                                    <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nombre">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="row control-group">
+                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" placeholder="Email" id="email" v-model="email">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="row control-group">
+                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                    <label>Teléfono</label>
+                                    <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="telefono">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="success"></div>
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <button type="submit" class="btn btn-success btn-lg" @click="guardarContacto" :disabled="isInvalid">Añadir</button>
+                                    <!-- Aquí en ese botón pondre un @click -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="contactos">
             <!-- Para recorrer el array de contactos utilizar 'vfor' -->
             <!-- Por cada elemento que tenemos en esa tabla-->
@@ -133,53 +181,9 @@
                 </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Añadir nuevo Section -->
-        <section id="nuevo">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2>Añadir contacto</h2>
-                        <hr class="star-primary">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <!-- Utilizamos los v-model -->
-                        <form name="sentMessage" id="contactForm" novalidate>
-                            <div class="row control-group">
-                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                    <label>Nombre</label>
-                                    <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nombre">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="row control-group">
-                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" placeholder="Email" id="email" v-model="email">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="row control-group">
-                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                    <label>Teléfono</label>
-                                    <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="telefono">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <br>
-                            <div id="success"></div>
-                            <div class="row">
-                                <div class="form-group col-xs-12">
-                                    <button type="submit" class="btn btn-success btn-lg" @click="guardarContacto" :disabled="isInvalid">Añadir</button>
-                                    <!-- Aquí en ese botón pondre un @click -->
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div id="botones">
+                <button type="submit" @click="porAntiguedad">{{texto()}}</button>
+                <button type="submit" @click="porNombre">Por Nombre</button>
             </div>
         </section>
     </div>
@@ -254,14 +258,34 @@
                 email: '',
                 telefono: '',
                 contactos: [
-                ]
+                    {
+                        nombre: "Elon Musk",
+                        email: "info@spacex.com",
+                        telefono: 90346628
+                    },
+                    {
+                        nombre: "Gukesh D",
+                        email: "contact@gukeshchess.com",
+                        telefono: 987654323
+                    }
+                ],
+                invertido: false
             },
             methods: {
                 guardarContacto: function(event) {
-                    this.contactos.push( { nombre: this.nombre, email: this.email, telefono: this.telefono} );
-                    this.nombre = '';
-                    this.email = '';
-                    this.telefono = '';
+                    if (this.invertido) {
+                        // Añadir el contacto al principio de la lista y vaciar los inputs
+                        this.contactos.unshift( { nombre: this.nombre, email: this.email, telefono: this.telefono} );
+                        this.nombre = '';
+                        this.email = '';
+                        this.telefono = '';
+                    } else {
+                        // Añadir el contacto al final y vaciar los inputs
+                        this.contactos.push( { nombre: this.nombre, email: this.email, telefono: this.telefono} );
+                        this.nombre = '';
+                        this.email = '';
+                        this.telefono = '';
+                    }
                 },
                 borrarContacto: function(pos) {
                     this.contactos.splice(pos, 1);
@@ -269,6 +293,21 @@
                 telValido(phone) {
                     // Para comprobar que es un número y no está vacío (para guardar el Contacto)
                     return !isNaN(phone) && phone.toString().trim().length > 0;
+                },
+                // Métodos para ordenar:
+                porAntiguedad() { //Al añadir un nuevo contacto se coloca al final de la lista de contactos
+                    if (this.invertido) {
+                    this.contactos.reverse();  // Volver al estado original
+                    } else {
+                        this.contactos.reverse();  // Invertir el array de contactos
+                    }
+                    this.invertido = !this.invertido;  // Cambiar el estado de la bandera
+                },
+                texto() {
+                    return this.invertido ? "Por Antigüedad" : "Por Reciente"; 
+                },
+                porNombre() {
+                    this.contactos.sort((a, b) => a.nombre.localeCompare(b.nombre));  // Ordenar por nombre alfabéticamente
                 }
             },
             computed: {
