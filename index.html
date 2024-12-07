@@ -68,14 +68,15 @@
     </nav>
 
     <!-- Header -->
-    <header>
+     <!-- Especificamos que vamos a utilizar el vocabulario que se encuantra en http://schema.org/ -->
+    <header vocab="http://schema.org/" typeof="WebPage">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-text">
-                        <span class="name">AgendaVue</span>
+                        <span class="name" property="name">AgendaVue</span>
                         <hr class="star-light">
-                        <span class="skills">Agenda básica en Vue</span>
+                        <span class="skills" property="description">Agenda básica en Vue</span>
                     </div>
                 </div>
             </div>
@@ -96,25 +97,25 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <!-- Utilizamos los v-model -->
-                        <form name="sentMessage" id="contactForm" novalidate>
+                        <form vocab="http://schema.org/" typeof="AddAction" name="sentMessage" id="contactForm" novalidate>
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls">
                                     <label>Nombre</label>
-                                    <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nombre">
+                                    <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nombre" property="object.name">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls">
                                     <label>Email</label>
-                                    <input type="email" class="form-control" placeholder="Email" id="email" v-model="email">
+                                    <input type="email" class="form-control" placeholder="Email" id="email" v-model="email" property="object.email">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls">
                                     <label>Teléfono</label>
-                                    <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="telefono">
+                                    <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="telefono" property="object.telephone">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
@@ -156,15 +157,15 @@
                 </div>
                 <!-- ESTA ES LA PRIMERA parte (alguna etiqueta tendrá que tener el id de ese objeto 'Vue') -->
                 <!-- el = "el id de la página que está afectada" -->
-                <div class="row" v-for="(contacto, pos) in contactos" :key="pos">
+                <div class="row" v-for="(contacto, pos) in contactos" :key="pos" vocab="http://schema.org/" typeof="Person">
                     <div class="col-xs-4">
-                        <p>{{contacto.nombre}}</p>
+                        <p property="name">{{contacto.nombre}}</p>
                     </div>
                     <div class="col-xs-4">
-                        <p>{{contacto.email}}</p>
+                        <p property="email">{{contacto.email}}</p>
                     </div>
                     <div class="col-xs-3">
-                        <p>{{contacto.telefono}}</p>
+                        <p property="telephone">{{contacto.telefono}}</p>
                     </div>
                     <div class="col-xs-1">
                         <!-- Este cuarto elemento que habrá en cada fila es el botón para borrar el contacto -->
@@ -206,7 +207,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="text-center">
+    <footer class="text-center" vocab="http://schema.org/" typeof="Organization">
         <div class="footer-above">
             <div class="container">
             </div>
@@ -214,7 +215,7 @@
         <div class="footer-below">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" property="name"> <!-- Como nombre de la organización -->
                         Copyleft &copy; e-ghost 2019
                     </div>
                 </div>
