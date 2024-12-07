@@ -83,96 +83,106 @@
     </header>
 
     <!-- Contactos Grid Section -->
-    <section id="contactos">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Contactos</h2>
-                    <hr class="star-primary">
+    <div class="container" id="appVue">
+        <section id="contactos">
+            <!-- Para recorrer el array de contactos utilizar 'vfor' -->
+            <!-- Por cada elemento que tenemos en esa tabla-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h2>Contactos</h2>
+                        <hr class="star-primary">
+                    </div>
+                </div>
+                <div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h4>Nombre</h4>
+                    </div>
+                    <div class="col-xs-4">
+                        <h4>Email</h4>
+                    </div>
+                    <div class="col-xs-3">
+                        <h4>Teléfono</h4>
+                    </div>
+                </div>
+                <!-- ESTA ES LA PRIMERA parte (alguna etiqueta tendrá que tener el id de ese objeto 'Vue') -->
+                <!-- el = "el id de la página que está afectada" -->
+                <div class="row" v-for="(contacto, pos) in contactos" :key="pos">
+                    <div class="col-xs-4">
+                        <p>{{contacto.nombre}}</p>
+                    </div>
+                    <div class="col-xs-4">
+                        <p>{{contacto.email}}</p>
+                    </div>
+                    <div class="col-xs-3">
+                        <p>{{contacto.telefono}}</p>
+                    </div>
+                    <div class="col-xs-1">
+                        <!-- Este cuarto elemento que habrá en cada fila es el botón para borrar el contacto -->
+                        <!-- En este botón vamos a asociar el @remove -->
+                        <button class="btn btn-danger btn-sm" @click="borrarContacto(pos)"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </div>
+                </div>
+                <div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p v-if="contactos.length === 0">No se ha encontrado ningún contacto.</p>
+                    </div>
+                </div>
                 </div>
             </div>
-            <div>
-            <div class="row">
-                <div class="col-xs-4">
-                    <h4>Nombre</h4>
-                </div>
-                <div class="col-xs-4">
-                    <h4>Email</h4>
-                </div>
-                <div class="col-xs-3">
-                    <h4>Teléfono</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4">
-                    <p>John Doe</p>
-                </div>
-                <div class="col-xs-4">
-                    <p>john.doe@deusto.es</p>
-                </div>
-                <div class="col-xs-3">
-                    <p>555555555</p>
-                </div>
-                <div class="col-xs-1">
-                      <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
-                </div>
-            </div>
-            </div>
-            <div>
-              <div class="row">
-                  <div class="col-xs-12">
-                      <p>No se ha encontrado ningún contacto.</p>
-                  </div>
-              </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Añadir nuevo Section -->
-    <section id="nuevo">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Añadir contacto</h2>
-                    <hr class="star-primary">
+        <!-- Añadir nuevo Section -->
+        <section id="nuevo">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h2>Añadir contacto</h2>
+                        <hr class="star-primary">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <!-- Utilizamos los v-model -->
+                        <form name="sentMessage" id="contactForm" novalidate>
+                            <div class="row control-group">
+                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                    <label>Nombre</label>
+                                    <input type="text" class="form-control" placeholder="Nombre" id="name" v-model="nombre">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="row control-group">
+                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" placeholder="Email" id="email" v-model="email">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="row control-group">
+                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                    <label>Teléfono</label>
+                                    <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone" v-model="telefono">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="success"></div>
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <button type="submit" class="btn btn-success btn-lg" @click="guardarContacto" :disabled="isInvalid">Añadir</button>
+                                    <!-- Aquí en ese botón pondre un @click -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Nombre</label>
-                                <input type="text" class="form-control" placeholder="Nombre" id="name">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Email</label>
-                                <input type="email" class="form-control" placeholder="Email" id="email">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Teléfono</label>
-                                <input type="tel" class="form-control" placeholder="Número de teléfono" id="phone">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div id="success"></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Añadir</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- About Section -->
     <section class="success" id="about">
@@ -232,10 +242,41 @@
     <!-- Vue -->
     <script src="js/vue.js"></script>   
 
-    <!--  -->
-    <!--  -->
-    <script type="text/javascript">
 
+    <!--  -->
+    <!--  -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: "#appVue",
+            data: {
+                nombre: '',
+                email: '',
+                telefono: '',
+                contactos: [
+                ]
+            },
+            methods: {
+                guardarContacto: function(event) {
+                    this.contactos.push( { nombre: this.nombre, email: this.email, telefono: this.telefono} );
+                    this.nombre = '';
+                    this.email = '';
+                    this.telefono = '';
+                },
+                borrarContacto: function(pos) {
+                    this.contactos.splice(pos, 1);
+                },
+                telValido(phone) {
+                    // Para comprobar que es un número y no está vacío (para guardar el Contacto)
+                    return !isNaN(phone) && phone.toString().trim().length > 0;
+                }
+            },
+            computed: {
+                isInvalid() {
+                    return this.nombre.length === 0 || this.email.length === 0 || !this.telValido(this.telefono);
+                }
+            }
+        })
     </script>
 
 </body>
