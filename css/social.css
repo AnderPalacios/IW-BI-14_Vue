@@ -1,0 +1,41 @@
+.social-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.social-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.twitter-section, .facebook-section {
+    padding: 10px;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+.twitter-section a, .facebook-section div {
+    display: inline-block;
+    margin: 5px;
+}
+
+.twitter-section a {
+    color: #1DA1F2;
+}
+
+.facebook-section div {
+    color: #4267B2;
+}
