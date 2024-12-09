@@ -27,12 +27,60 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebPage",
+          "name": "AgendaVue",
+          "description": "Agenda básica en Vue",
+          "author": {
+            "@type": "Organization",
+            "name": "iwbi14",
+            "email": "info@iwbi14.com"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "AgendaVue",
+            "url": "http://IW-BI-14.com"
+          },
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": [
+              {
+                "@type": "Person",
+                "name": "Elon Musk",
+                "email": "info@spacex.com",
+                "telephone": "90346628"
+              },
+              {
+                "@type": "Person",
+                "name": "Gukesh D",
+                "email": "contact@gukeshchess.com",
+                "telephone": "987654323"
+              }
+            ]
+          },
+          "potentialAction": {
+            "@type": "AddAction",
+            "target": "#AgregarContacto",
+            "result": {
+              "@type": "Person",
+              "name": "Ejemplo nombre",
+              "email": "ejemplo@gmail.com",
+              "telephone": "Número de teléfono"
+            }
+          }
+        }
+        </script>
+
 </head>
 
 <body id="page-top" class="index">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" itemscope itemtype="http://schema.org/SiteNavigationElement">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -42,7 +90,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top">AgendaVue</a>
+                <a class="navbar-brand" href="#page-top" itemprop="name">AgendaVue</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,13 +100,13 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#contactos">Contactos</a>
+                        <a href="#contactos" itemprop="url">Contactos</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#nuevo">Añadir contacto</a>
+                        <a href="#nuevo" itemprop="url">Añadir contacto</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#about">Acerca de...</a>
+                        <a href="#about" itemprop="url">Acerca de...</a>
                     </li>
                 </ul>
             </div>
@@ -68,15 +116,16 @@
     </nav>
 
     <!-- Header -->
-     <!-- Especificamos que vamos a utilizar el vocabulario que se encuantra en http://schema.org/ -->
-    <header vocab="http://schema.org/" typeof="WebPage">
+    <!-- Especificamos que vamos a utilizar el vocabulario que se encuantra en http://schema.org/ -->
+    <!-- Con RDFa: vocab="http://schema.org/" typeof="WebPage" resource="#AgendaVue" -->
+    <header itemscope itemtype="http://schema.org/WebPage" itemid="#AgendaVue">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-text">
-                        <span class="name" property="name">AgendaVue</span>
+                        <span class="name" itemprop="name">AgendaVue</span>
                         <hr class="star-light">
-                        <span class="skills" property="description">Agenda básica en Vue</span>
+                        <span class="skills" itemprop="description">Agenda básica en Vue</span>
                     </div>
                 </div>
             </div>
@@ -97,7 +146,8 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <!-- Utilizamos los v-model -->
-                        <form vocab="http://schema.org/" typeof="AddAction" name="sentMessage" id="contactForm" novalidate>
+                        <!-- Con RDFa -->
+                        <form vocab="http://schema.org/" typeof="AddAction" resource="#AgregarContacto" name="sentMessage" id="contactForm" novalidate>
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls">
                                     <label>Nombre</label>
@@ -157,15 +207,17 @@
                 </div>
                 <!-- ESTA ES LA PRIMERA parte (alguna etiqueta tendrá que tener el id de ese objeto 'Vue') -->
                 <!-- el = "el id de la página que está afectada" -->
-                <div class="row" v-for="(contacto, pos) in contactos" :key="pos" vocab="http://schema.org/" typeof="Person">
+                <!-- Con RDFa: vocab="http://schema.org/" typeof="Person" :resource="`${contacto.nombre}`" -->
+                 <!-- Para este bloque MicroData -->
+                <div class="row" v-for="(contacto, pos) in contactos" :key="pos" itemscope itemtype="http://schema.org/Person" itemid="#{{contacto.nombre}}">
                     <div class="col-xs-4">
-                        <p property="name">{{contacto.nombre}}</p>
+                        <p itemprop="name">{{contacto.nombre}}</p>
                     </div>
                     <div class="col-xs-4">
-                        <p property="email">{{contacto.email}}</p>
+                        <p itemprop="email">{{contacto.email}}</p>
                     </div>
                     <div class="col-xs-3">
-                        <p property="telephone">{{contacto.telefono}}</p>
+                        <p itemprop="telephone">{{contacto.telefono}}</p>
                     </div>
                     <div class="col-xs-1">
                         <!-- Este cuarto elemento que habrá en cada fila es el botón para borrar el contacto -->
@@ -185,6 +237,57 @@
             <div id="botones">
                 <button type="submit" @click="porAntiguedad">{{texto()}}</button>
                 <button type="submit" @click="porNombre">Por Nombre</button>
+                <!-- Capacidades sociales -->
+                <!-- Botón Twitter -->
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                    data-text="¡Mira este contenido!" data-url="http://your-website.com" data-via="yourtwitterhandle"
+                    data-hashtags="AgendaVue">Compartir en Twitter
+                </a>
+
+                <a href="https://twitter.com/fcbarcelona?ref_src=twsrc%5Etfw" class="twitter-like-button" 
+                    data-show-count="false" data-lang="es">
+                    Me gusta
+                </a>
+
+                <!-- Botón seguir de Twitter -->
+                <a href="https://twitter.com/fcbarcelona" class="twitter-follow-button" 
+                    data-show-count="false" data-lang="es">
+                    Seguir
+                </a>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+                <!-- Botón de Facebook -->
+                <!-- https://www.facebook.com/fcbarcelona/ -->
+                <!-- Botón seguir y compartir -->
+                <div class="fb-page" 
+                    data-href="https://www.facebook.com/fcbarcelona/" 
+                    data-tabs="timeline" 
+                    data-width="500" 
+                    data-height="300" 
+                    data-small-header="false" 
+                    data-adapt-container-width="true" 
+                    data-hide-cover="false" 
+                    data-show-facepile="true">
+                </div>
+                <!-- Botón compartir -->
+                <div class="fb-share-button" 
+                    data-href="https://www.facebook.com/fcbarcelona/" 
+                    data-layout="button_count">
+                </div>
+                <!-- Botón me gusta -->
+                <div class="fb-like" 
+                    data-href="https://www.facebook.com/watch/?v=1970132733485024" 
+                    data-width=""
+                    data-layout="standard" 
+                    data-action="like" 
+                    data-size="small"  
+                    data-share="true">
+                </div>
+
+                <script async defer crossorigin="anonymous" 
+                    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v17.0" 
+                    nonce="xxxx">
+                </script>
             </div>
         </section>
     </div>
@@ -207,7 +310,10 @@
     </section>
 
     <!-- Footer -->
-    <footer class="text-center" vocab="http://schema.org/" typeof="Organization">
+    <!-- prefix para referenciar términos que  que no están (claramente) incluidos en http://schema.org/-->
+    <!-- Uso del vocabulario de Creative Commons que contiene términos relacionados con licencias y derechos de autor -->
+    <!-- Para este bloque RDfa -->
+    <footer class="text-center" vocab="http://schema.org/" typeof="Organization" resource="#eGhost" prefix="cc: http://creativecommons.org/ns#">
         <div class="footer-above">
             <div class="container">
             </div>
@@ -215,7 +321,7 @@
         <div class="footer-below">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12" property="name"> <!-- Como nombre de la organización -->
+                    <div class="col-lg-12" property="cc:license"> 
                         Copyleft &copy; e-ghost 2019
                     </div>
                 </div>
@@ -251,73 +357,7 @@
     <!--  -->
     <!--  -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script type="text/javascript">
-        var appVue = new Vue({
-            el: "#appVue",
-            data: {
-                nombre: '',
-                email: '',
-                telefono: '',
-                contactos: [
-                    {
-                        nombre: "Elon Musk",
-                        email: "info@spacex.com",
-                        telefono: 90346628
-                    },
-                    {
-                        nombre: "Gukesh D",
-                        email: "contact@gukeshchess.com",
-                        telefono: 987654323
-                    }
-                ],
-                invertido: false
-            },
-            methods: {
-                guardarContacto: function(event) {
-                    if (this.invertido) {
-                        // Añadir el contacto al principio de la lista y vaciar los inputs
-                        this.contactos.unshift( { nombre: this.nombre, email: this.email, telefono: this.telefono} );
-                        this.nombre = '';
-                        this.email = '';
-                        this.telefono = '';
-                    } else {
-                        // Añadir el contacto al final y vaciar los inputs
-                        this.contactos.push( { nombre: this.nombre, email: this.email, telefono: this.telefono} );
-                        this.nombre = '';
-                        this.email = '';
-                        this.telefono = '';
-                    }
-                },
-                borrarContacto: function(pos) {
-                    this.contactos.splice(pos, 1);
-                },
-                telValido(phone) {
-                    // Para comprobar que es un número y no está vacío (para guardar el Contacto)
-                    return !isNaN(phone) && phone.toString().trim().length > 0;
-                },
-                // Métodos para ordenar:
-                porAntiguedad() { //Al añadir un nuevo contacto se coloca al final de la lista de contactos
-                    if (this.invertido) {
-                    this.contactos.reverse();  // Volver al estado original
-                    } else {
-                        this.contactos.reverse();  // Invertir el array de contactos
-                    }
-                    this.invertido = !this.invertido;  // Cambiar el estado de la bandera
-                },
-                texto() {
-                    return this.invertido ? "Por Antigüedad" : "Por Reciente"; 
-                },
-                porNombre() {
-                    this.contactos.sort((a, b) => a.nombre.localeCompare(b.nombre));  // Ordenar por nombre alfabéticamente
-                }
-            },
-            computed: {
-                isInvalid() {
-                    return this.nombre.length === 0 || this.email.length === 0 || !this.telValido(this.telefono);
-                }
-            }
-        })
-    </script>
+    <script src="js/appVue.js"></script>
 
 </body>
 
